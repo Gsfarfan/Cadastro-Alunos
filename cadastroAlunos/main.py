@@ -1,6 +1,7 @@
 from tkinter.ttk import *
 from tkinter import*
 from tkinter import ttk
+from tkinter import Tk
 from tkinter import messagebox
 from tkinter import filedialog as fd
 
@@ -51,6 +52,21 @@ app_logo = app_logo.resize((50,50))
 app_logo = ImageTk.PhotoImage(app_logo)
 app_logos = Label(frame_logo, image=app_logo, text="cadastro de Alunos", width=850, compound=LEFT, relief=RAISED, anchor=NW, font=('Ivy 15 bold'), bg=co6, fg=co1)
 app_logos.place(x=0, y=0)
+
+
+#######################################################################################################
+
+def control(i):
+    pass
+
+
+app_img_cadastro = Image.open('icone cadastro.png')
+app_img_cadastro = app_img_cadastro.resize((18,18))
+app_img_cadastro = ImageTk.PhotoImage(app_img_cadastro)
+app_cadastro = Button(frame_dados, image=app_img_cadastro, text="Cadastro", width=100, compound=LEFT, overrelief="ridge", font=('Ivy 11'), bg=co1, fg=co0)
+app_cadastro.place(x=10, y=30)
+
+
 
 
 janela.mainloop()
