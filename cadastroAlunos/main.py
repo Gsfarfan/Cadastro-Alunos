@@ -58,7 +58,53 @@ app_logos.place(x=0, y=0)
 #######################################################################################################
 
 def alunos():
-    print('Aluno')
+    l_nome = Label(frame_detalhes, text="Nome *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_nome.place(x=4, y=10)
+    e_nome = Entry(frame_detalhes, width=45, justify='left', relief='solid')
+    e_nome.place(x=7, y=40)
+
+    l_email = Label(frame_detalhes, text="Email *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_email.place(x=4, y=70)
+    e_email = Entry(frame_detalhes, width=45, justify='left', relief='solid')
+    e_email.place(x=7, y=100)
+
+    l_tel = Label(frame_detalhes, text="Telefone *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_tel.place(x=4, y=130)
+    e_tel = Entry(frame_detalhes, width=20, justify='left', relief='solid')
+    e_tel.place(x=7, y=160)
+
+
+    l_sexo = Label(frame_detalhes, text="Sexo *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_sexo.place(x=190, y=130)
+    c_sexo = ttk.Combobox(frame_detalhes, width=12, font=('Ivy 8 bold'))
+    c_sexo['values'] = ('Masculino', 'Feminino', 'Não Binario')
+    c_sexo.place(x=190, y=160)
+
+    
+    l_data_nasc = Label(frame_detalhes, text="Data de Nascimento *", height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_data_nasc.place(x=446, y=10)
+    data_nasc = DateEntry(frame_detalhes, width=18, background='darkblue', foregorund='white', borderwidth=2, year=2024)
+    data_nasc.place(x=450, y=40)
+
+    l_cpf = Label(frame_detalhes, text="CPF *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_cpf.place(x=446, y=70)
+    e_cpf = Entry(frame_detalhes, width=20, justify='left', relief='solid')
+    e_cpf.place(x=450, y=100)
+
+    turmas = ['Turma A', 'Turma B']
+    turma = []
+    for i in turmas:
+        turma.append(i)
+
+    l_turma = Label(frame_detalhes, text="Turma *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_turma.place(x=446, y=130)
+    c_turma = ttk.Combobox(frame_detalhes, width=20, font=('Ivy 8 bold'))
+    c_turma['values'] = (turma)
+    c_turma.place(x=450, y=160)
+
+    
+
+
 
 ######################################################################################
 
@@ -267,5 +313,5 @@ app_salvar.place(x=236, y=30)
 
 
 
-
+alunos()
 janela.mainloop()
