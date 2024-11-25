@@ -102,6 +102,65 @@ def alunos():
     c_turma['values'] = (turma)
     c_turma.place(x=450, y=160)
 
+############################################################################################
+
+    global imagem, imagem_string, l_imagem
+
+    def escolher_imagem():
+        global imagem, imagem_string, l_imagem
+
+        imagem = fd.askopenfilename()
+        imagem_string = imagem
+
+        imagem = Image.open(imagem)
+        imagem = imagem.resize((130,130))
+        imagem = ImageTk.PhotoImage(imagem)
+        l_imagem = Label(frame_detalhes, image=imagem, anchor=NW, bg=co1, fg=co4)
+        l_imagem.place(x=300, y=10)
+
+        botao_carregar['text'] = 'Trocar de Foto'
+
+    botao_carregar = Button(frame_detalhes, command=escolher_imagem, text="Carregar foto".upper(), width=20, compound=CENTER, anchor=CENTER, overrelief="ridge", font=('Ivy 7'), bg=co1, fg=co0)
+    botao_carregar.place(x=300, y=160)
+
+
+    l_linha = Label(frame_detalhes, relief=GROOVE, text='h', width=1, height=100, anchor=NW, font=('Ivy 1'), bg=co0, fg=co0)
+    l_linha.place(x=610, y=10)
+    l_linha = Label(frame_detalhes, relief=GROOVE, text='h', width=1, height=100, anchor=NW, font=('Ivy 1'), bg=co1, fg=co0)
+    l_linha.place(x=608, y=10)
+
+    l_nome = Label(frame_detalhes, text="Buscar Aluno:", height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+    l_nome.place(x=627, y=10)
+    e_nome_procurar = Entry(frame_detalhes, width=17, justify='center', relief="solid", font=('Ivy 10'))
+    e_nome_procurar.place(x=630, y=35)
+
+    botao_procurar = Button(frame_detalhes, anchor=CENTER, text='Buscar', width=9, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co1, fg=co0)
+    botao_procurar.place(x=757, y=35)
+
+    ########################################################################################################################################################
+
+    botao_salvar = Button(frame_detalhes, anchor=CENTER, text='Salvar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
+    botao_salvar.place(x=627, y=110)
+
+    botao_atualizar = Button(frame_detalhes, anchor=CENTER, text='Atualizar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co6, fg=co1)
+    botao_atualizar.place(x=627, y=135)
+
+
+    botao_deletar = Button(frame_detalhes, anchor=CENTER, text='Deletar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co7, fg=co1)
+    botao_deletar.place(x=627, y=160)
+
+    botao_ver = Button(frame_detalhes, anchor=CENTER, text='Ver'.upper(), width=9, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co1, fg=co0)
+    botao_ver.place(x=727, y=160)
+
+
+
+
+
+
+
+
+
+
     
 
 
