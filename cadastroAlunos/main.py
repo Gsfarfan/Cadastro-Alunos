@@ -303,7 +303,7 @@ def adicionar():
     e_preco = Entry(frame_detalhes, width=10, justify='left', relief='solid')
     e_preco.place(x=7, y=160)
 
-    botao_carregar = Button(frame_detalhes, anchor=CENTER, command=novo_curso, text='Novo Cursp'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
+    botao_carregar = Button(frame_detalhes, anchor=CENTER, command=novo_curso, text='Novo'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
     botao_carregar.place(x=107, y=160)
 
     botao_atualizar = Button(frame_detalhes, anchor=CENTER, command=update_curso, text='Atualizar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co6, fg=co1)
@@ -360,13 +360,97 @@ def adicionar():
     e_nome_turma = Entry(frame_detalhes, width=35, justify='left', relief="solid")
     e_nome_turma.place(x=407, y=40)
 
+
+    def nova_turma():
+        nome = e_nome_turma.get()
+        curso = c_curso.get()
+        data = data_inicio.get()
+
+        lista = [nome, curso, data]
+
+        for i in lista:
+            if i=="":
+                messagebox.showerror('Erro', 'Preencha todos os campos')
+                return
+        
+        criar_turma(lista)
+        
+        messagebox.showinfo('Sucesso', 'Os dados foram inseridos com sucesso')
+
+        e_nome_turma.delete(0,END)
+        c_curso.delete(0,END)
+        data_inicio.delete(0,END)
+
+        mostrar_turmas()
+
+#####################################################################################################
+
+    def update_turma():
+        try:
+            tree_itens = tree_turma.focus()
+            tree_dicionario = tree_turma.item(tree_itens)
+            tree_lista = tree_dicionario['values']
+            
+            valor_id = tree_lista[0]
+
+            e_nome_turma.insert(0, tree_lista[1])
+            c_curso.insert(0, tree_lista[2])
+            data_inicio.insert(0, tree_lista[3])
+
+            def update():
+                
+                nome = e_nome_turma.get()
+                curso = c_curso.get()
+                data = data_inicio.get()
+
+                lista = [nome, curso, data, valor_id]
+
+                for i in lista:
+                    if i=="":
+                        messagebox.showerror('Erro', 'Preencha todos os campos')
+                        return
+                
+                atualizar_turma(lista)
+            
+                messagebox.showinfo('Sucesso', 'Os dados foram inseridos com sucesso')
+
+                e_nome_turma.delete(0,END)
+                c_curso.delete(0,END)
+                data_inicio.delete(0,END)
+
+                mostrar_turmas()
+                botao_salvar.destroy()
+    
+            botao_salvar = Button(frame_detalhes, anchor=CENTER, command=update, text='Salvar atualizacao'.upper(), width=17, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
+            botao_salvar.place(x=407, y=130)
+
+        except IndexError:
+            messagebox.showerror('Erro', 'Seleciona um dos cursos da tabela')
+
+    def delete_turma():
+        try:
+            tree_itens = tree_turma.focus()
+            tree_dicionario = tree_turma.item(tree_itens)
+            tree_lista = tree_dicionario['values']
+            
+            valor_id = tree_lista[0]
+
+            deletar_turma([valor_id])
+            messagebox.showinfo('Sucesso', 'Os dados foram deletados')
+            mostrar_turmas()
+
+        except IndexError:
+            messagebox.showerror('Erro', 'Seleciona um dos cursos da tabela')
+
+#############################################################################################################################
+
     l_turma = Label(frame_detalhes, text="Curso *", height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
     l_turma.place(x=404, y=70)
 
-    cursos = ['curso 1', 'curso 2']
+    cursos = ver_cursos()
     curso = []
     for i in cursos:
-        curso.append(i)
+        curso.append(i[1])
 
     c_curso = ttk.Combobox(frame_detalhes, width=20, font=('Ivy 8 bold'))
     c_curso['values'] = (curso)
@@ -379,13 +463,13 @@ def adicionar():
 
 #################################################################################################################################################################################
     
-    botao_carregar = Button(frame_detalhes, anchor=CENTER, text='Salvar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
+    botao_carregar = Button(frame_detalhes, command=nova_turma, anchor=CENTER, text='Salvar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
     botao_carregar.place(x=507, y=160)
 
-    botao_atualizar = Button(frame_detalhes, anchor=CENTER, text='Atualizar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co6, fg=co1)
+    botao_atualizar = Button(frame_detalhes, anchor=CENTER, command=update_turma, text='Atualizar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co6, fg=co1)
     botao_atualizar.place(x=587, y=160)
 
-    botao_deletar = Button(frame_detalhes, anchor=CENTER, text='Deletar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co7, fg=co1)
+    botao_deletar = Button(frame_detalhes, command=delete_turma, anchor=CENTER, text='Deletar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co7, fg=co1)
     botao_deletar.place(x=667, y=160)
 
 #####################################################################################################################################################################################
@@ -395,7 +479,9 @@ def adicionar():
         app_nome.grid(row=0, column=0, padx=0, pady=10, sticky=NSEW)
         
         list_header = ['ID','Nome da Turma','Curso','Inicio']
-        df_list = []
+
+        df_list = ver_turmas()
+
         global tree_turma
         tree_turma = ttk.Treeview(frame_tabela_turma, selectmode="extended",columns=list_header, show="headings")
         vsb = ttk.Scrollbar(frame_tabela_turma, orient="vertical", command=tree_turma.yview)
