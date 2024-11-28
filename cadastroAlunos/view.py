@@ -44,7 +44,7 @@ def deletar_curso(i):
 def criar_turma(i):
     with con:
         cur = con.cursor()
-        query = "INSERT INTO Turmas (nome, curso_nome, data_inicio) VALUES (?, ?, ?)"
+        query = "INSERT INTO turmas (nome, curso_nome, data_inicio) VALUES (?, ?, ?)"
         cur.execute(query, i)
 
 def ver_turmas():
@@ -67,7 +67,7 @@ def atualizar_turma(i):
 def deletar_turma(i):
     with con:
         cur = con.cursor()
-        query = "DELETE FROM Turmas WHERE id=?"
+        query = "DELETE FROM turmas WHERE id=?"
         cur.execute(query,i)
 
 #################################################################################################
@@ -92,7 +92,7 @@ def ver_alunos():
 def atualizar_alunos(i):
     with con:
         cur = con.cursor()
-        query = "UPDATE Turma SET nome=?, email=?, telefone=?, sexo=?, imagem=?, data_nascimento=?, cpf=?, turma_nome=? WHERE id=?"
+        query = "UPDATE alunos SET nome=?, email=?, telefone=?, sexo=?, imagem=?, data_nascimento=?, cpf=?, turma_nome=? WHERE id=?"
         cur.execute(query,i)
 
 def deletar_alunos(i):

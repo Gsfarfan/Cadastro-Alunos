@@ -60,6 +60,131 @@ app_logos.place(x=0, y=0)
 #######################################################################################################
 
 def alunos():
+
+    def novo_aluno():
+        global imagem, imagem_string, l_imagem
+        nome = e_nome.get()
+        email = e_email.get()
+        telefone = e_tel.get()
+        sexo = c_sexo.get()
+        data = data_nasc.get()
+        cpf = e_cpf.get()
+        turma = c_turma.get()
+        imagem = imagem_string
+
+        lista = [nome, email, telefone, sexo, imagem, data, cpf, turma]
+
+        for i in lista:
+            if i=='':
+                messagebox.showerror('Erro', 'Preencha todos os campos')
+                return
+            
+        criar_alunos(lista)
+        messagebox.showinfo('Sucesso', 'Os dados foram inseridos')
+        e_nome.delete(0,END)
+        e_email.delete(0,END)
+        e_tel.delete(0,END)
+        c_sexo.delete(0,END)
+        data_nasc.delete(0,END)
+        e_cpf.delete(0,END)
+        c_turma.delete(0,END)
+
+        mostrar_alunos()
+
+####################################################################################
+
+    def update_aluno():
+        global imagem, imagem_string, l_imagem
+
+        try:
+            tree_itens = tree_aluno.focus()
+            tree_dicionario = tree_aluno.item(tree_itens)
+            tree_lista = tree_dicionario['values']
+
+            valor_id = tree_lista[0]
+
+            e_nome.delete(0,END)
+            e_email.delete(0,END)
+            e_tel.delete(0,END)
+            c_sexo.delete(0,END)
+            data_nasc.delete(0,END)
+            e_cpf.delete(0,END)
+            c_turma.delete(0,END)
+
+            e_nome.insert(0,tree_lista[1])
+            e_email.insert(0,tree_lista[2])
+            e_tel.insert(0,tree_lista[3])
+            c_sexo.insert(0,tree_lista[4])
+            data_nasc.insert(0,tree_lista[6])
+            e_cpf.insert(0,tree_lista[7])
+            c_turma.insert(0,tree_lista[8])
+
+            imagem = tree_lista[5]
+            imagem_string = imagem
+
+            
+            imagem = Image.open(imagem)
+            imagem = imagem.resize((130,130))
+            imagem = ImageTk.PhotoImage(imagem)
+            l_imagem = Label(frame_detalhes, image=imagem, anchor=NW, bg=co1, fg=co4)
+            l_imagem.place(x=300, y=10)
+
+            def update():
+
+                nome = e_nome.get()
+                email = e_email.get()
+                telefone = e_tel.get()
+                sexo = c_sexo.get()
+                data = data_nasc.get()
+                cpf = e_cpf.get()
+                turma = c_turma.get()
+                imagem = imagem_string
+
+                lista = [nome, email, telefone, sexo, imagem, data, cpf, turma, valor_id]
+
+                for i in lista:
+                    if i=='':
+                        messagebox.showerror('Erro', 'Preencha todos os campos')
+                        return
+                    
+                atualizar_alunos(lista)
+                messagebox.showinfo('Sucesso', 'Os dados foram atualizados')
+                e_nome.delete(0,END)
+                e_email.delete(0,END)
+                e_tel.delete(0,END)
+                c_sexo.delete(0,END)
+                data_nasc.delete(0,END)
+                e_cpf.delete(0,END)
+                c_turma.delete(0,END)
+
+                mostrar_alunos()
+                botao_update.destroy()
+
+            botao_update = Button(frame_detalhes, command=update, anchor=CENTER, text='Salvar atualizacao'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
+            botao_update.place(x=727, y=130)
+
+        except IndexError:
+            messagebox.showerror('Erro', 'Selecione um dos alunos na tabela')
+
+
+    def delete_aluno():
+        try:
+            tree_itens = tree_aluno.focus()
+            tree_dicionario = tree_aluno.item(tree_itens)
+            tree_lista = tree_dicionario['values']
+
+            valor_id = tree_lista[0]
+            deletar_alunos([valor_id])
+            messagebox.showinfo('Sucesso', 'Aluno deletado com sucesso')
+            mostrar_alunos()
+        except IndexError:
+            messagebox.showerror('Erro', 'Selecione um aluno na tabela')
+
+    
+
+
+
+
     l_nome = Label(frame_detalhes, text="Nome *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
     l_nome.place(x=4, y=10)
     e_nome = Entry(frame_detalhes, width=45, justify='left', relief='solid')
@@ -93,10 +218,11 @@ def alunos():
     e_cpf = Entry(frame_detalhes, width=20, justify='left', relief='solid')
     e_cpf.place(x=450, y=100)
 
-    turmas = ['Turma A', 'Turma B']
+    turmas = ver_turmas()
     turma = []
+
     for i in turmas:
-        turma.append(i)
+        turma.append(i[1])
 
     l_turma = Label(frame_detalhes, text="Turma *", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
     l_turma.place(x=446, y=130)
@@ -141,14 +267,14 @@ def alunos():
 
     ########################################################################################################################################################
 
-    botao_salvar = Button(frame_detalhes, anchor=CENTER, text='Salvar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
+    botao_salvar = Button(frame_detalhes, command=novo_aluno, anchor=CENTER, text='Salvar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co3, fg=co1)
     botao_salvar.place(x=627, y=110)
 
-    botao_atualizar = Button(frame_detalhes, anchor=CENTER, text='Atualizar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co6, fg=co1)
+    botao_atualizar = Button(frame_detalhes, command=update_aluno, anchor=CENTER, text='Atualizar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co6, fg=co1)
     botao_atualizar.place(x=627, y=135)
 
 
-    botao_deletar = Button(frame_detalhes, anchor=CENTER, text='Deletar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co7, fg=co1)
+    botao_deletar = Button(frame_detalhes, command=delete_aluno, anchor=CENTER, text='Deletar'.upper(), width=10, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co7, fg=co1)
     botao_deletar.place(x=627, y=160)
 
     botao_ver = Button(frame_detalhes, anchor=CENTER, text='Ver'.upper(), width=9, overrelief=RIDGE, font=('Ivy 7 bold'), bg=co1, fg=co0)
@@ -159,7 +285,7 @@ def alunos():
         app_nome.grid(row=0, column=0, padx=0, pady=10, sticky=NSEW)
         
         list_header = ['ID','Nome','email','telefone','sexo','imagem','data','CPF', 'Curso']
-        df_list = []
+        df_list = ver_alunos()
         global tree_aluno
         tree_aluno = ttk.Treeview(frame_tabela, selectmode="extended",columns=list_header, show="headings")
         vsb = ttk.Scrollbar(frame_tabela, orient="vertical", command=tree_aluno.yview)
